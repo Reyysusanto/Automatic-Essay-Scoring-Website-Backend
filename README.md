@@ -99,7 +99,7 @@ DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=aes_database
 DB_USER=aes_user
-DB_PASSWORD=your_password
+DB_PASS=your_password
 
 # Go Backend Configuration
 GO_PORT=8080
