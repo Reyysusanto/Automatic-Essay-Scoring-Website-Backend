@@ -3,7 +3,10 @@
 import { Sidebar, SidebarContent } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useAuthStore } from '@/store/useStore';
+import Cookies from 'js-cookie';
+import { toast } from 'sonner';
 
 export const TeachersNav = [
   {
@@ -21,7 +24,17 @@ export const TeachersNav = [
 ];
 
 export const AppSidebar = () => {
+  const router = useRouter();
   const pathname = usePathname();
+
+  const handleLogOut = () => {
+    const { clearAuth } = useAuthStore.getState();
+    clearAuth();
+    Cookies.remove('access_token', { sameSite: 'strict', secure: true });
+    Cookies.remove('refresh_token', { sameSite: 'strict', secure: true });
+    router.push('/login');
+    toast.error('Successfully logged out');
+  };
 
   return (
     <>
@@ -74,7 +87,8 @@ export const AppSidebar = () => {
               <div className="w-full">
                 <div className="mt-auto px-4">
                   <Button
-                    className="w-full bg-primary-color h-9 rounded-md text-white hover:bg-red-600 transition-colors"
+                    onClick={handleLogOut}
+                    className="w-full bg-primary-color h-9 rounded-md text-white hover:bg-emerald-700 transition-colors"
                     variant="default"
                     size="sm"
                   >
