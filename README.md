@@ -1,23 +1,25 @@
-# AutoGrade-Automatic-Essay-Scoring
+# AutoGrade – Automatic Essay Scoring
 
 ---
 
-## ⚙️ Teknologi dan Perpustakaan yang Digunakan
+## FRONTEND
 
-- **[TypeScript](https://www.typescriptlang.org/docs/)** – Codebase lebih aman, minim bug, dan developer experience lebih nyaman (auto-complete, type checking).
-- **[TailwindCSS](https://tailwindcss.com/docs)** – Styling utility-first yang cepat, konsisten, dan gampang di-maintain.
-- **[Shadcn](https://ui.shadcn.com/)** – Komponen siap pakai berbasis Tailwind (button, modal, card, dll).
-- **[TanStack Query](https://tanstack.com/query/latest/docs/react/overview)** – Dipakai bersamaan dengan Next.js untuk data fetching di client-side. Untuk server-side, tetap bisa pakai fetch bawaan Next.js
-- **[Axios](https://axios-http.com/docs/intro)** – HTTP client, berguna kalau butuh fitur tambahan (interceptors, request retry, timeout).
-- **[Zod](https://zod.dev/)** – Buat validasi schema, form dengan React Hook Form, input.
-- **[Zustand](https://zustand.docs.pmnd.rs/getting-started/introduction)** – State management yang simpel, cocok untuk global state yang tidak terkait server. Next.js App Router sudah bawa Context + Server Component, tapi untuk state client yang reaktif, zustand lebih praktis.
-- **[React Hook Form](https://react-hook-form.com/get-startedhttps://react-hook-form.com/get-started)** – Form handling yang ringan, performa tinggi, mudah digabung dengan Zod untuk validasi. Cocok buat form kompleks di Next.js (login, register, checkout).
-- **[JS Cookie](https://www.npmjs.com/package/js-cookie)** – Library sederhana untuk mengelola cookies di browser (set, get, remove). Berguna untuk menyimpan token/session di client-side.
-- **[JWT Decode](https://www.npmjs.com/package/jwt-decode#documentation)** – Utility untuk decode JWT (JSON Web Token) tanpa perlu verify di client, biasanya dipakai untuk membaca payload seperti userId, exp, atau roles.
+### ⚙️ Teknologi dan Perpustakaan yang Digunakan
+
+* **[TypeScript](https://www.typescriptlang.org/docs/)** – Codebase lebih aman, minim bug, dan developer experience lebih nyaman (auto-complete, type checking).
+* **[TailwindCSS](https://tailwindcss.com/docs)** – Styling utility-first yang cepat, konsisten, dan gampang di-maintain.
+* **[Shadcn](https://ui.shadcn.com/)** – Komponen siap pakai berbasis Tailwind (button, modal, card, dll).
+* **[TanStack Query](https://tanstack.com/query/latest/docs/react/overview)** – Data fetching di client-side. Untuk server-side, tetap bisa pakai fetch bawaan Next.js.
+* **[Axios](https://axios-http.com/docs/intro)** – HTTP client dengan fitur tambahan (interceptors, request retry, timeout).
+* **[Zod](https://zod.dev/)** – Validasi schema (terintegrasi dengan React Hook Form).
+* **[Zustand](https://zustand.docs.pmnd.rs/getting-started/introduction)** – State management ringan, cocok untuk global state di client-side.
+* **[React Hook Form](https://react-hook-form.com/get-started)** – Form handling ringan, performa tinggi, mudah digabung dengan Zod.
+* **[JS Cookie](https://www.npmjs.com/package/js-cookie)** – Manajemen cookies di browser.
+* **[JWT Decode](https://www.npmjs.com/package/jwt-decode#documentation)** – Utility untuk decode JWT di client.
 
 ---
 
-## 🧭 Struktur Project
+### 🧭 Struktur Project
 
 ```
 Automatic-Essay-Scoring-Website-Frontend/
@@ -29,15 +31,15 @@ Automatic-Essay-Scoring-Website-Frontend/
 ├── lib/           # Logic umum (axios instance, auth utils, helper server/client)
 ├── node_modules/  # Dependency dari npm/yarn
 ├── public/        # File statis (images, favicon, dll)
-├── schemas/       # Validasi data pakai Zod (biasanya buat form atau API)
-├── store/         # State global yang di-manage pakai Zustand
-├── types/         # TypeScript type & interface agar aman dan jelas
+├── schemas/       # Validasi data pakai Zod
+├── store/         # State global (Zustand)
+├── types/         # TypeScript type & interface
 ├── utils/         # Helper function umum (format tanggal, konversi string, dll)
 ```
 
 ---
 
-## 🔧 Cara Menjalankan Project
+### 🔧 Cara Menjalankan Project
 
 1. Install dependencies:
 
@@ -51,7 +53,7 @@ Automatic-Essay-Scoring-Website-Frontend/
    npm run dev
    ```
 
-3. Build buat production:
+3. Build untuk production:
 
    ```bash
    npm run build
@@ -59,9 +61,9 @@ Automatic-Essay-Scoring-Website-Frontend/
 
 ---
 
-## 🌱 Setup '.env'
+### 🌱 Setup `.env`
 
-Buat file `.env` dari contoh `.env.example`:
+Buat file `.env.local` dari contoh `.env.example`:
 
 ```bash
 cp .env.example .env.local
@@ -70,17 +72,15 @@ cp .env.example .env.local
 Contoh isi:
 
 ```env
-VITE_API_URL=https://api.umkm-desakare.test
-VITE_PUBLIC_KEY=your_key_here
+NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_KEY=your_key_here
 ```
 
-> ⚠️ Jangan pernah commit `.env`,
+> ⚠️ Jangan pernah commit file `.env`.
 
 ---
 
-## 🧩 Contoh Struktur Modul Kite
-
-Biar tidak bingung dalam menyusun file :
+### 🧩 Contoh Struktur Modul Kecil
 
 ```
 components/
@@ -98,9 +98,7 @@ lib/api/
 
 ---
 
-## 🌿 Konvensi Penamaan Branch
-
-Pake format `type/nama-modul-keterangan`, contoh:
+### 🌿 Konvensi Penamaan Branch
 
 | Tujuan                      | Nama Branch                |
 | --------------------------- | -------------------------- |
@@ -110,13 +108,99 @@ Pake format `type/nama-modul-keterangan`, contoh:
 
 ---
 
-## 🗒️ Catatan :
+### 🗒️ Catatan
 
-- Semua API call wajib di `lib/api/`
-- Validasi form atau data masukin ke `schemas/` pake Zod
-- Pakai global state cuma kalau perlu (misal: user info, session)
-- Hindari `any`, buat tipe di `types/`
-- Komponen harus reusable sebisa mungkin
-- Gunakan Tailwind + Shadcn untuk styling
-- Jangan langsung pakai `process.env`, semua taru di `src/utils/env.ts`
-- Tulis komentar kalau logic rumit
+* Semua API call → `lib/api/`
+* Validasi form/data → `schemas/` (pakai Zod)
+* Global state → `store/` (pakai Zustand, jika perlu)
+* Hindari `any`, gunakan tipe di `types/`
+* Komponen harus reusable
+* Gunakan Tailwind + Shadcn untuk styling
+* Jangan langsung pakai `process.env`, buat wrapper di `utils/env.ts`
+* Tulis komentar untuk logic yang rumit
+
+---
+
+## BACKEND
+
+### ⚙️ Teknologi dan Perpustakaan yang Digunakan
+
+* **[FastAPI](https://fastapi.tiangolo.com/)** – Framework web modern berbasis Python.
+* **[Uvicorn](https://www.uvicorn.org/)** – ASGI server untuk menjalankan FastAPI.
+* **[Transformers (Hugging Face)](https://huggingface.co/transformers/)** – Model NLP untuk Automatic Essay Scoring.
+* **[scikit-learn](https://scikit-learn.org/)**, **[NumPy](https://numpy.org/)**, **[Pandas](https://pandas.pydata.org/)** – Preprocessing & evaluasi model.
+* **Database (opsional: PostgreSQL / MongoDB)** – Menyimpan user, essay, dsb.
+* **Google Drive API (opsional)** – Simpan model hasil training.
+
+---
+
+### 🧭 Struktur Project
+
+```
+Automatic-Essay-Scoring/
+│
+├── frontend/      # Next.js (Website)
+├── backend/       # FastAPI (API + Model)
+```
+
+---
+
+### 🔧 Cara Menjalankan Project
+
+1. Masuk ke folder backend:
+
+   ```bash
+   cd backend/ml-nlp
+   ```
+
+2. Buat virtual environment:
+
+   ```bash
+   python -m venv venv
+   ```
+
+3. Aktifkan venv:
+
+   * **Windows**:
+
+     ```bash
+     venv\Scripts\activate
+     ```
+   * **Linux/Mac**:
+
+     ```bash
+     source venv/bin/activate
+     ```
+4. requirements:
+
+   ```bash
+   fastapi
+   uvicorn[standard]
+   torch
+   torchvision
+   torchaudio
+   transformers
+   datasets
+   evaluate
+   scikit-learn
+   matplotlib
+   pydantic
+   python-dotenv
+   ```
+   
+5. Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+6. Jalankan server:
+
+   ```bash
+   uvicorn main:app --reload
+   ```
+
+   Server berjalan di:
+
+   * API root → [http://localhost:8000](http://localhost:8000)
+   * Swagger UI → [http://localhost:8000/docs](http://localhost:8000/docs)
