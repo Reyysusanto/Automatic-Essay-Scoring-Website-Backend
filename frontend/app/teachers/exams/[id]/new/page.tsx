@@ -1,9 +1,7 @@
+import NewQuestionForm from "@/components/teachers/question/AddQuestionForm";
+
 const NewQuestionPage = () => {
-  return (
-    <div>
-      <h1>New Question</h1>
-    </div>
-  );
+  return <NewQuestionForm />;
 };
 
 export default NewQuestionPage;
