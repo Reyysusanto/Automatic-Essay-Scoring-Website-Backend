@@ -1,9 +1,11 @@
-const EditExamPage = () => {
+import EditQuestionClient from "@/components/teachers/question/EditQuestionClient";
+
+const EditQuestionPage = () => {
   return (
     <div>
-      <h1>Edit Exam</h1>
+      <EditQuestionClient />
     </div>
   );
 };
 
-export default EditExamPage;
+export default EditQuestionPage;
