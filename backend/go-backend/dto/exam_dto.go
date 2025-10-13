@@ -1,27 +1,32 @@
 package dto
 
-import "go-backend/model"
+import (
+	"go-backend/model"
+
+	"github.com/google/uuid"
+)
 
 type (
 	ExamResponse struct {
-		ID     string `json:"id"`
-		Name   string `json:"name"`
-		UserId string `json:"user_id"`
+		ID       uuid.UUID    `json:"id"`
+		Name     string       `json:"name"`
+		Token    string       `json:"token"`
+		Lecturer UserResponse `json:"lecturer"`
 	}
 
 	CreateExamRequest struct {
-		Name   string `json:"name"`
-		UserId string `json:"user_id"`
+		Name       string     `json:"name" binding:"required"`
+		LecturerID *uuid.UUID `json:"lecturer_id"`
 	}
 
 	UpdateExamRequest struct {
-		ID     string  `json:"-"`
-		Name   *string `json:"name,omitempty"`
-		UserId *string `json:"user_id,omitempty"`
+		ID         string     `json:"-"`
+		Name       string     `json:"name,omitempty" binding:"required"`
+		LecturerID *uuid.UUID `json:"lecturer_id,omitempty"`
 	}
-	DeleteExamRequest struct {
-		ExamID string `json:"-"`
-	}
+	// DeleteExamRequest struct {
+	// 	ExamID string `json:"-"`
+	// }
 
 	ExamPaginationResponse struct {
 		PaginationResponse

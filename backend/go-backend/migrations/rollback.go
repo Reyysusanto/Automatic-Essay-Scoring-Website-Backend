@@ -8,6 +8,11 @@ import (
 
 func Rollback(db *gorm.DB) error {
 	tables := []interface{}{
+		&model.Score{},
+		&model.Essay{},
+		&model.Question{},
+		&model.ExamUser{},
+		&model.Exam{},
 		&model.User{},
 	}
 

@@ -28,9 +28,9 @@ func Authentication(jwtService service.InterfaceJWTService) gin.HandlerFunc {
 			return
 		}
 
-		tokenStr := strings.TrimPrefix(authHeader, "Bearer ")
+		authHeader = strings.Replace(authHeader, "Bearer ", "", -1)
 
-		token, err := jwtService.ValidateToken(tokenStr)
+		token, err := jwtService.ValidateToken(authHeader)
 		if err != nil || !token.Valid {
 			logging.Log.Warnf("Invalid token: %v", err)
 			res := utils.BuildResponseFailed(constants.MESSAGE_FAILED_PROSES_REQUEST, constants.MESSAGE_FAILED_TOKEN_NOT_VALID, nil)
@@ -38,7 +38,7 @@ func Authentication(jwtService service.InterfaceJWTService) gin.HandlerFunc {
 			return
 		}
 
-		userID, err := jwtService.GetUserIDByToken(tokenStr)
+		userID, err := jwtService.GetUserIDByToken(authHeader)
 		if err != nil {
 			logging.Log.Warnf("Failed to extract user ID from token: %v", err)
 			res := utils.BuildResponseFailed(constants.MESSAGE_FAILED_PROSES_REQUEST, err.Error(), nil)
@@ -46,7 +46,7 @@ func Authentication(jwtService service.InterfaceJWTService) gin.HandlerFunc {
 			return
 		}
 
-		role, err := jwtService.GetRoleByToken(tokenStr)
+		role, err := jwtService.GetRoleByToken(authHeader)
 		if err != nil {
 			logging.Log.Warnf("Failed to extract role from token: %v", err)
 			res := utils.BuildResponseFailed(constants.MESSAGE_FAILED_PROSES_REQUEST, err.Error(), nil)
@@ -55,8 +55,8 @@ func Authentication(jwtService service.InterfaceJWTService) gin.HandlerFunc {
 		}
 
 		logging.Log.Infof("Authenticated request - UserID: %s, Role: %s", userID, role)
-
-		ctx.Set("Authorization", tokenStr)
+		// fmt.Println(authHeader)
+		ctx.Set("Authorization", authHeader)
 		ctx.Set("user_id", userID)
 		ctx.Set("role", role)
 

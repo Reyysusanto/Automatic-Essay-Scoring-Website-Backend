@@ -1,16 +1,13 @@
 package model
 
 import (
-	"time"
-
 	"github.com/google/uuid"
 )
 
 type Exam struct {
-	ID        uuid.UUID `gorm:"type:uuid;primaryKey" json:"id"`
-	Name      string    `json:"name"`
-	StartExam time.Time `gorm:"not null" json:"start_exam"`
-	EndExam   time.Time `gorm:"not null" json:"end_exam"`
+	ID    uuid.UUID `gorm:"type:uuid;primaryKey" json:"id"`
+	Name  string    `json:"name"`
+	Token string    `json:"token"`
 
 	ExamsUsers []ExamUser `gorm:"foreignKey:ExamID"`
 	Questions  []Question `gorm:"foreignKey:ExamID"`

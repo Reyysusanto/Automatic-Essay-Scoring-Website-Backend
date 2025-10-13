@@ -40,10 +40,13 @@ func main() {
 		jwtService = service.NewJWTService()
 
 		userRepo = repository.NewUserRepository(db)
+		examRepo = repository.NewExamRepository(db)
 		// adminRepo       = repository.NewAdminRepository(db)
 		userService = service.NewUserService(userRepo, jwtService)
+		examService = service.NewExamService(userRepo, examRepo, jwtService)
 		// adminService    = service.NewAdminService(adminRepo, jwtService)
 		userController = controller.NewUserController(userService)
+		examController = controller.NewExamController(examService)
 		// adminController = controller.NewAdminController(adminService)
 	)
 
@@ -53,6 +56,7 @@ func main() {
 	routes.PublicRoutes(server, userController)
 	// routes.AdminRoutes(server, userController, adminController, jwtService)
 	routes.UserRoutes(server, userController, jwtService)
+	routes.ExamRoutes(server, examController, jwtService)
 
 	server.Static("/assets", "./assets")
 
