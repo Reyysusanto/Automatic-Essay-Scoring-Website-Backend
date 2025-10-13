@@ -11,13 +11,13 @@ import (
 )
 
 type (
-	IAdminRepository interface {
+	IExamRepository interface {
 		// Create
 		CreateExam(ctx context.Context, tx *gorm.DB, exam model.Exam) error
 
 		// Read
 		GetAllExams(ctx context.Context, tx *gorm.DB) ([]model.Exam, error)
-		GetAllExamsWithPagination(ctx context.Context, tx *gorm.DB) ([]model.Exam, error)
+		GetAllExamsWithPagination(ctx context.Context, tx *gorm.DB, req dto.PaginationRequest) (dto.ExamPaginationRepositoryResponse, error)
 		GetExamByID(ctx context.Context, tx *gorm.DB, examID string) (model.Exam, bool, error)
 
 		// Update
@@ -27,35 +27,35 @@ type (
 		DeleteExamByID(ctx context.Context, tx *gorm.DB, examID string) error
 	}
 
-	AdminRepository struct {
+	ExamRepository struct {
 		db *gorm.DB
 	}
 )
 
-func NewAdminRepository(db *gorm.DB) *AdminRepository {
-	return &AdminRepository{
+func NewExamRepository(db *gorm.DB) *ExamRepository {
+	return &ExamRepository{
 		db: db,
 	}
 }
 
-func (ar *AdminRepository) CreateExam(ctx context.Context, tx *gorm.DB, exam model.Exam) error {
+func (er *ExamRepository) CreateExam(ctx context.Context, tx *gorm.DB, exam model.Exam) error {
 	if tx == nil {
-		tx = ar.db
+		tx = er.db
 	}
 
-	return tx.WithContext(ctx).Create(&exam).Error
+	return tx.WithContext(ctx).Create(&exam).Preload("Lecturer").Error
 }
 
-func (ar *AdminRepository) GetAllExams(ctx context.Context, tx *gorm.DB) ([]model.Exam, error) {
+func (er *ExamRepository) GetAllExams(ctx context.Context, tx *gorm.DB) ([]model.Exam, error) {
 	if tx == nil {
-		tx = ar.db
+		tx = er.db
 	}
 	var (
 		exams []model.Exam
 		err   error
 	)
 
-	query := tx.WithContext(ctx).Model(&model.Exam{}).Preload("Users")
+	query := tx.WithContext(ctx).Model(&model.Exam{}).Preload("Lecturer")
 
 	if err := query.Order(`"created_at" DESC`).Find(&exams).Error; err != nil {
 		return []model.Exam{}, err
@@ -63,9 +63,9 @@ func (ar *AdminRepository) GetAllExams(ctx context.Context, tx *gorm.DB) ([]mode
 	return exams, err
 }
 
-func (ar *AdminRepository) GetAllExamsWithPagination(ctx context.Context, tx *gorm.DB, req dto.PaginationRequest) (dto.ExamPaginationRepositoryResponse, error) {
+func (er *ExamRepository) GetAllExamsWithPagination(ctx context.Context, tx *gorm.DB, req dto.PaginationRequest) (dto.ExamPaginationRepositoryResponse, error) {
 	if tx == nil {
-		tx = ar.db
+		tx = er.db
 	}
 
 	var exams []model.Exam
@@ -80,7 +80,7 @@ func (ar *AdminRepository) GetAllExamsWithPagination(ctx context.Context, tx *go
 		req.Page = 1
 	}
 
-	query := tx.WithContext(ctx).Model(&model.Exam{}).Preload("Users")
+	query := tx.WithContext(ctx).Model(&model.Exam{}).Preload("Lecturer")
 	if req.Search != "" {
 		searchValue := "%" + strings.ToLower(req.Search) + "%"
 		query = query.Where("LOWER(name) LIKE ?", searchValue)
@@ -108,30 +108,30 @@ func (ar *AdminRepository) GetAllExamsWithPagination(ctx context.Context, tx *go
 
 }
 
-func (ar *AdminRepository) GetExamByID(ctx context.Context, tx *gorm.DB, examID string) (model.Exam, bool, error) {
+func (er *ExamRepository) GetExamByID(ctx context.Context, tx *gorm.DB, examID string) (model.Exam, bool, error) {
 	if tx == nil {
-		tx = ar.db
+		tx = er.db
 	}
 
 	var exam model.Exam
-	if err := tx.WithContext(ctx).Preload("Users").Where("id = ?", examID).Take(&exam).Error; err != nil {
+	if err := tx.WithContext(ctx).Preload("Lecturer").Where("id = ?", examID).Take(&exam).Error; err != nil {
 		return model.Exam{}, false, err
 	}
 
 	return exam, true, nil
 }
 
-func (ar *AdminRepository) UpdateExam(ctx context.Context, tx *gorm.DB, exam model.Exam) error {
+func (er *ExamRepository) UpdateExam(ctx context.Context, tx *gorm.DB, exam model.Exam) error {
 	if tx == nil {
-		tx = ar.db
+		tx = er.db
 	}
 
 	return tx.WithContext(ctx).Where("id = ?", exam.ID).Updates(&exam).Error
 }
 
-func (ar *AdminRepository) DeleteExamByID(ctx context.Context, tx *gorm.DB, examID string) error {
+func (er *ExamRepository) DeleteExamByID(ctx context.Context, tx *gorm.DB, examID string) error {
 	if tx == nil {
-		tx = ar.db
+		tx = er.db
 	}
 
 	return tx.WithContext(ctx).Where("id = ?", examID).Delete(&model.Exam{}).Error

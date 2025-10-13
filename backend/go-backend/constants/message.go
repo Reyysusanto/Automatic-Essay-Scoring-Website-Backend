@@ -26,6 +26,8 @@ const (
 	MESSAGE_FAILED_DELETE_EXAM  = "failed delete exam"
 	MESSAGE_FAILED_GET_ALL_EXAM = "failed get all exam"
 
+	MESSAGE_FAILED_GET_DETAIL_EXAM = "failed get detail exam"
+
 	// success
 	MESSAGE_SUCCESS_CREATE_USER     = "success create user"
 	MESSAGE_SUCCESS_GET_DETAIL_USER = "success get detail user"
@@ -34,11 +36,12 @@ const (
 	MESSAGE_SUCCESS_DELETE_USER     = "success delete user"
 	MESSAGE_SUCCESS_LOGIN_USER      = "success login user"
 
-	MESSAGE_SUCCESS_CREATE_EXAM  = "success create exam"
-	MESSAGE_SUCCESS_GET_EXAM     = "success get exam"
-	MESSAGE_SUCCESS_UPDATE_EXAM  = "success update exam"
-	MESSAGE_SUCCESS_DELETE_EXAM  = "success delete exam"
-	MESSAGE_SUCCESS_GET_ALL_EXAM = "success get all exam"
+	MESSAGE_SUCCESS_CREATE_EXAM     = "success create exam"
+	MESSAGE_SUCCESS_GET_EXAM        = "success get exam"
+	MESSAGE_SUCCESS_UPDATE_EXAM     = "success update exam"
+	MESSAGE_SUCCESS_DELETE_EXAM     = "success delete exam"
+	MESSAGE_SUCCESS_GET_ALL_EXAM    = "success get all exam"
+	MESSAGE_SUCCESS_GET_DETAIL_EXAM = "success get detail exam"
 )
 
 var (
@@ -77,4 +80,5 @@ var (
 	ErrGetAllExam       = errors.New("failed to get all exam")
 	ErrInvalidExamName  = errors.New("failed invalid exam name")
 	ErrInvalidExamScore = errors.New("failed invalid exam score")
+	ErrGetDetailExams   = errors.New("failed get detail exam")
 )
