@@ -50,6 +50,7 @@ var (
 	ErrUnexpectedSigningMethod  = errors.New("unexpected signing method")
 	ErrDecryptToken             = errors.New("failed to decrypt token")
 	ErrTokenInvalid             = errors.New("token invalid")
+	ErrTokenExpired             = errors.New("token expired")
 	ErrValidateToken            = errors.New("failed to validate token")
 	ErrInvalidName              = errors.New("failed invalid name")
 	ErrInvalidEmail             = errors.New("failed invalid email")

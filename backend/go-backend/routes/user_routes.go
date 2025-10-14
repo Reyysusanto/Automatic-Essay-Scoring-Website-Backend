@@ -22,6 +22,7 @@ func UserRoutes(
 			users.GET("", userController.GetAllUser)
 			users.POST("", userController.CreateUser)
 		}
+		// users.GET("/refreshtoken", userController.RefreshToken)
 		users.GET("/:id", userController.GetUserByID)
 		users.PATCH("/:id", userController.UpdateUser)
 		users.DELETE("/:id", userController.DeleteUser)

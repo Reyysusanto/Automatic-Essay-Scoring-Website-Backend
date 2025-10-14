@@ -18,6 +18,7 @@ type (
 		Login(ctx *gin.Context)
 
 		CreateUser(ctx *gin.Context)
+		RefreshToken(ctx *gin.Context)
 		GetAllUser(ctx *gin.Context)
 		GetUserByID(ctx *gin.Context)
 		UpdateUser(ctx *gin.Context)
@@ -26,12 +27,14 @@ type (
 
 	UserController struct {
 		userService service.IUserService
+		jwtService  service.InterfaceJWTService
 	}
 )
 
-func NewUserController(userService service.IUserService) *UserController {
+func NewUserController(userService service.IUserService, jwtService service.InterfaceJWTService) *UserController {
 	return &UserController{
 		userService: userService,
+		jwtService:  jwtService,
 	}
 }
 
@@ -126,6 +129,20 @@ func (uc *UserController) GetAllUser(ctx *gin.Context) {
 		Meta:     result.PaginationResponse,
 	}
 	ctx.JSON(http.StatusOK, res)
+}
+
+func (uc *UserController) RefreshToken(ctx *gin.Context) {
+	token, err := uc.userService.RefreshToken(ctx)
+	if err != nil {
+		logging.Log.WithError(err).Warn("failed to refresh token")
+		ctx.JSON(http.StatusUnauthorized, utils.BuildResponseFailed("failed to refresh token", err.Error(), nil))
+		return
+	}
+
+	logging.Log.Info("success refresh token")
+	ctx.JSON(http.StatusOK, utils.BuildResponseSuccess("success refresh token", map[string]string{
+		"access_token": token,
+	}))
 }
 
 func (uc *UserController) GetUserByID(ctx *gin.Context) {
