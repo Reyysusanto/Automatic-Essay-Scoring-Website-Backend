@@ -45,7 +45,7 @@ func main() {
 		userService = service.NewUserService(userRepo, jwtService)
 		examService = service.NewExamService(userRepo, examRepo, jwtService)
 		// adminService    = service.NewAdminService(adminRepo, jwtService)
-		userController = controller.NewUserController(userService)
+		userController = controller.NewUserController(userService, jwtService)
 		examController = controller.NewExamController(examService)
 		// adminController = controller.NewAdminController(adminService)
 	)
@@ -53,7 +53,7 @@ func main() {
 	server := gin.Default()
 	server.Use(middleware.CORSMiddleware())
 
-	routes.PublicRoutes(server, userController)
+	routes.PublicRoutes(server, userController, jwtService)
 	// routes.AdminRoutes(server, userController, adminController, jwtService)
 	routes.UserRoutes(server, userController, jwtService)
 	routes.ExamRoutes(server, examController, jwtService)
