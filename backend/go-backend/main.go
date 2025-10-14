@@ -39,14 +39,19 @@ func main() {
 	var (
 		jwtService = service.NewJWTService()
 
-		userRepo = repository.NewUserRepository(db)
-		examRepo = repository.NewExamRepository(db)
+		userRepo     = repository.NewUserRepository(db)
+		examRepo     = repository.NewExamRepository(db)
+		questionRepo = repository.NewQuestionRepository(db)
+
 		// adminRepo       = repository.NewAdminRepository(db)
-		userService = service.NewUserService(userRepo, jwtService)
-		examService = service.NewExamService(userRepo, examRepo, jwtService)
+		userService     = service.NewUserService(userRepo, jwtService)
+		examService     = service.NewExamService(userRepo, examRepo, jwtService)
+		questionService = service.NewQuestionService(questionRepo, examRepo, jwtService)
+
 		// adminService    = service.NewAdminService(adminRepo, jwtService)
-		userController = controller.NewUserController(userService, jwtService)
-		examController = controller.NewExamController(examService)
+		userController     = controller.NewUserController(userService, jwtService)
+		examController     = controller.NewExamController(examService)
+		questionController = controller.NewQuestionController(questionService)
 		// adminController = controller.NewAdminController(adminService)
 	)
 
@@ -57,6 +62,7 @@ func main() {
 	// routes.AdminRoutes(server, userController, adminController, jwtService)
 	routes.UserRoutes(server, userController, jwtService)
 	routes.ExamRoutes(server, examController, jwtService)
+	routes.QuestionRoutes(server, questionController, jwtService)
 
 	server.Static("/assets", "./assets")
 
