@@ -17,11 +17,11 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createExamService } from '@/lib/api/exam/createExam';
 import { toast } from 'sonner';
+import { Spinner } from '@/components/ui/spinner';
 
 export const TambahUjianDropdown = () => {
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
-  const [judulUjian, setJudulUjian] = useState('');
   const form = useForm<z.infer<typeof ExamSchema>>({
     resolver: zodResolver(ExamSchema),
     mode: 'onChange',
@@ -30,9 +30,9 @@ export const TambahUjianDropdown = () => {
     },
   });
 
-  const { control, handleSubmit } = form;
+  const { control, handleSubmit, formState, setValue } = form;
 
-  const { mutate: createExam } = useMutation({
+  const { mutate: createExam, isPending: Loadingcreate } = useMutation({
     mutationFn: createExamService,
     onSuccess: (result) => {
       if (result.status) {
@@ -49,16 +49,13 @@ export const TambahUjianDropdown = () => {
 
   const submitForm = (data: z.infer<typeof ExamSchema>) => {
     createExam({ name: data.name });
-
-    if (judulUjian.trim()) {
-      setJudulUjian('');
-      setIsOpen(false);
-    }
+    setValue('name', '');
+    setIsOpen(false);
   };
 
   const handleCancel = () => {
     setIsOpen(false);
-    setJudulUjian('');
+    setValue('name', '');
   };
 
   return (
@@ -105,9 +102,10 @@ export const TambahUjianDropdown = () => {
                 <div className="flex gap-2 mt-2 h-full">
                   <Button
                     size="sm"
-                    className="flex-1 bg-primary-color hover:bg-emerald-700 h-9 rounded-md text-white cursor-pointer"
+                    disabled={!formState.isValid || Loadingcreate}
+                    className="flex-1 bg-primary-color hover:bg-teal-600 h-9 rounded-md text-white cursor-pointer"
                   >
-                    Tambah
+                    {Loadingcreate ? <Spinner size={'small'} /> : 'Tambah'}
                   </Button>
                   <Button
                     type="button"
