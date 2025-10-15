@@ -1,4 +1,8 @@
+.env*
 *.env
 storage/
 volumes/
 .vscode/
+logs/
+*.log
+
