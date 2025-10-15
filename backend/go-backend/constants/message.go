@@ -20,15 +20,27 @@ const (
 	MESSAGE_FAILED_REGISTER            = "failed to register user"
 	MESSAGE_SUCCESS_REGISTER           = "success register user"
 
-	MESSAGE_FAILED_CREATE_EXAM  = "failed create exam"
-	MESSAGE_FAILED_GET_EXAM     = "failed get exam"
-	MESSAGE_FAILED_UPDATE_EXAM  = "failed update exam"
-	MESSAGE_FAILED_DELETE_EXAM  = "failed delete exam"
-	MESSAGE_FAILED_GET_ALL_EXAM = "failed get all exam"
-
+	//exam
+	MESSAGE_FAILED_CREATE_EXAM     = "failed create exam"
+	MESSAGE_FAILED_GET_EXAM        = "failed get exam"
+	MESSAGE_FAILED_UPDATE_EXAM     = "failed update exam"
+	MESSAGE_FAILED_DELETE_EXAM     = "failed delete exam"
+	MESSAGE_FAILED_GET_ALL_EXAM    = "failed get all exam"
 	MESSAGE_FAILED_GET_DETAIL_EXAM = "failed get detail exam"
 
+	//question
+	MESSAGE_FAILED_CREATE_QUESTION                  = "failed create question"
+	MESSAGE_FAILED_GET_QUESTION                     = "failed get question"
+	MESSAGE_FAILED_UPDATE_QUESTION                  = "failed update question"
+	MESSAGE_FAILED_DELETE_QUESTION                  = "failed delete question"
+	MESSAGE_FAILED_GET_ALL_QUESTION                 = "failed get all question"
+	MESSAGE_FAILED_GET_DETAIL_QUESTION              = "failed get detail question"
+	MESSAGE_FAILED_GET_ALL_QUESTION_NO_PAGINATION   = "failed get all question no pagination"
+	MESSAGE_FAILED_GET_ALL_QUESTION_WITH_PAGINATION = "failed get all question with pagination"
+
 	// success
+
+	// User
 	MESSAGE_SUCCESS_CREATE_USER     = "success create user"
 	MESSAGE_SUCCESS_GET_DETAIL_USER = "success get detail user"
 	MESSAGE_SUCCESS_GET_LIST_USER   = "success get list user"
@@ -36,12 +48,21 @@ const (
 	MESSAGE_SUCCESS_DELETE_USER     = "success delete user"
 	MESSAGE_SUCCESS_LOGIN_USER      = "success login user"
 
+	// Exam
 	MESSAGE_SUCCESS_CREATE_EXAM     = "success create exam"
 	MESSAGE_SUCCESS_GET_EXAM        = "success get exam"
 	MESSAGE_SUCCESS_UPDATE_EXAM     = "success update exam"
 	MESSAGE_SUCCESS_DELETE_EXAM     = "success delete exam"
 	MESSAGE_SUCCESS_GET_ALL_EXAM    = "success get all exam"
 	MESSAGE_SUCCESS_GET_DETAIL_EXAM = "success get detail exam"
+
+	// Question
+	MESSAGE_SUCCESS_CREATE_QUESTION     = "success create question"
+	MESSAGE_SUCCESS_GET_QUESTION        = "success get question"
+	MESSAGE_SUCCESS_UPDATE_QUESTION     = "success update question"
+	MESSAGE_SUCCESS_DELETE_QUESTION     = "success delete question"
+	MESSAGE_SUCCESS_GET_ALL_QUESTION    = "success get all question"
+	MESSAGE_SUCCESS_GET_DETAIL_QUESTION = "success get detail question"
 )
 
 var (
@@ -50,6 +71,7 @@ var (
 	ErrUnexpectedSigningMethod  = errors.New("unexpected signing method")
 	ErrDecryptToken             = errors.New("failed to decrypt token")
 	ErrTokenInvalid             = errors.New("token invalid")
+	ErrTokenExpired             = errors.New("token expired")
 	ErrValidateToken            = errors.New("failed to validate token")
 	ErrInvalidName              = errors.New("failed invalid name")
 	ErrInvalidEmail             = errors.New("failed invalid email")

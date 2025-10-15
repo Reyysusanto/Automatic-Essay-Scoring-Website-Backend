@@ -16,7 +16,7 @@ type (
 	IUserService interface {
 		Register(ctx context.Context, req dto.RegisterUserRequest) (dto.RegisterUserResponse, error)
 		Login(ctx context.Context, req dto.LoginUserRequest) (dto.LoginResponse, error)
-
+		RefreshToken(ctx context.Context) (string, error)
 		CreateUser(ctx context.Context, req dto.CreateUserRequest) (dto.UserResponse, error)
 		GetuserByID(ctx context.Context, userID string) (dto.UserResponse, error)
 		ReadAllUserWithPagination(ctx context.Context, req dto.UserPaginationRequest) (dto.UserPaginationResponse, error)
@@ -36,6 +36,30 @@ func NewUserService(userRepo repository.IUserRepository, jwtService InterfaceJWT
 		jwtService: jwtService,
 	}
 }
+
+func (us *UserService) RefreshToken(ctx context.Context) (string, error) {
+	tokenString := ctx.Value("Authorization").(string)
+
+	token, err := us.jwtService.ValidateToken(tokenString)
+	if err != nil {
+		return "", constants.ErrValidateToken
+	}
+
+	claims, ok := token.Claims.(*jwtCustomClaims)
+	if !ok || !token.Valid {
+		return "", constants.ErrTokenInvalid
+	}
+
+	accesToken, _, err := us.jwtService.GenerateToken(claims.UserID, claims.Role)
+
+	if err != nil {
+		return "", constants.ErrGenerateAccessToken
+	}
+
+	return accesToken, nil
+}
+
+// Validate the existing token
 
 func (us *UserService) Register(ctx context.Context, req dto.RegisterUserRequest) (dto.RegisterUserResponse, error) {
 	if len(req.Name) < 5 {
