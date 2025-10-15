@@ -17,8 +17,9 @@ type (
 	}
 
 	jwtCustomClaims struct {
-		UserID string `json:"user_id"`
-		Role   string `json:"role"`
+		UserID    string `json:"user_id"`
+		Role      string `json:"role"`
+		TokenType string `json:"token_type"`
 		jwt.RegisteredClaims
 	}
 
@@ -48,6 +49,7 @@ func (j *JWTService) GenerateToken(userID string, role string) (string, string, 
 	accessClaims := jwtCustomClaims{
 		userID,
 		role,
+		"access_token",
 		jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Second * 300)),
 			Issuer:    j.issuer,
@@ -64,6 +66,7 @@ func (j *JWTService) GenerateToken(userID string, role string) (string, string, 
 	refreshClaims := jwtCustomClaims{
 		userID,
 		role,
+		"refresh_token",
 		jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Second * 3600 * 24 * 7)),
 			Issuer:    j.issuer,

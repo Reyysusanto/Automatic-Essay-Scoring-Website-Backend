@@ -46,7 +46,7 @@ func (us *UserService) RefreshToken(ctx context.Context) (string, error) {
 	}
 
 	claims, ok := token.Claims.(*jwtCustomClaims)
-	if !ok || !token.Valid {
+	if !ok || !token.Valid || claims.TokenType != "refresh_token" {
 		return "", constants.ErrTokenInvalid
 	}
 
