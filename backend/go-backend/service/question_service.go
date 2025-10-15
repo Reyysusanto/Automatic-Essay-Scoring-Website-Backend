@@ -185,6 +185,13 @@ func (qs *QuestionService) UpdateQuestion(ctx context.Context, req dto.UpdateQue
 		}
 		question.Question = req.Question
 	}
+
+	if req.AnswerKey != "" {
+		if len(req.AnswerKey) < 3 {
+			return dto.QuestionResponse{}, dto.ErrAnswerKeyTooShort
+		}
+		question.AnswerKey = req.AnswerKey
+	}
 	if req.MaxScore != 0 {
 		question.MaxScore = req.MaxScore
 	}

@@ -20,5 +20,6 @@ var (
 	ErrUpdateQuestion               = errors.New("failed update question")
 	ErrDeleteQuestion               = errors.New("failed delete question")
 	ErrQuestionContentTooShort      = errors.New("failed question content too short (min 3)")
+	ErrAnswerKeyTooShort            = errors.New("failed answer key too short (min 3)")
 	ErrQuestionScoreInvalid         = errors.New("failed question score invalid (must > 0)")
 )
