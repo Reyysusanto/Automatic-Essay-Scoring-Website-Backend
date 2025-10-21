@@ -14,7 +14,7 @@ type (
 	IQuestionService interface {
 		CreateQuestion(ctx context.Context, req dto.CreateQuestionRequest) (dto.QuestionResponse, error)
 		GetAllQuestionsByExam(ctx context.Context, idExam string) ([]dto.QuestionResponse, error)
-		GetAllQuestionsByExamWithPagination(ctx context.Context, req dto.PaginationRequest) (dto.QuestionPaginationResponse, error)
+		GetAllQuestionsByExamWithPagination(ctx context.Context, examID string, req dto.PaginationRequest) (dto.QuestionPaginationResponse, error)
 		GetQuestionByID(ctx context.Context, questionId string) (dto.QuestionResponse, error)
 		UpdateQuestion(ctx context.Context, req dto.UpdateQuestionRequest) (dto.QuestionResponse, error)
 		DeleteQuestion(ctx context.Context, questionId string) (dto.QuestionResponse, error)
@@ -106,9 +106,9 @@ func (qs *QuestionService) GetAllQuestionsByExam(ctx context.Context, examID str
 	return datas, nil
 }
 
-func (qs *QuestionService) GetAllQuestionsByExamWithPagination(ctx context.Context, req dto.PaginationRequest) (dto.QuestionPaginationResponse, error) {
+func (qs *QuestionService) GetAllQuestionsByExamWithPagination(ctx context.Context, examID string, req dto.PaginationRequest) (dto.QuestionPaginationResponse, error) {
 
-	dataWithPaginate, err := qs.questionRepo.GetAllQuestionsWithPagination(ctx, nil, req)
+	dataWithPaginate, err := qs.questionRepo.GetAllQuestionsWithPagination(ctx, nil, examID, req)
 	if err != nil {
 		return dto.QuestionPaginationResponse{}, dto.ErrGetAllQuestionWithPagination
 	}
