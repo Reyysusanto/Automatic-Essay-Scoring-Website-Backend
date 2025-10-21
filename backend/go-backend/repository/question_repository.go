@@ -14,7 +14,7 @@ type (
 	IQuestionRepository interface {
 		CreateQuestion(ctx context.Context, tx *gorm.DB, question model.Question) error
 		GetAllQuestionsByExam(ctx context.Context, tx *gorm.DB, examID string) ([]model.Question, error)
-		GetAllQuestionsWithPagination(ctx context.Context, tx *gorm.DB, req dto.PaginationRequest) (dto.QuestionPaginationRepositoryResponse, error)
+		GetAllQuestionsWithPagination(ctx context.Context, tx *gorm.DB, examID string, req dto.PaginationRequest) (dto.QuestionPaginationRepositoryResponse, error)
 		GetQuestionByID(ctx context.Context, tx *gorm.DB, questionID string) (model.Question, bool, error)
 		UpdateQuestion(ctx context.Context, tx *gorm.DB, question model.Question) error
 		DeleteQuestionByID(ctx context.Context, tx *gorm.DB, questionID string) error
@@ -54,7 +54,7 @@ func (er *QuestionRepository) GetAllQuestionsByExam(ctx context.Context, tx *gor
 	return questions, err
 }
 
-func (er *QuestionRepository) GetAllQuestionsWithPagination(ctx context.Context, tx *gorm.DB, req dto.PaginationRequest) (dto.QuestionPaginationRepositoryResponse, error) {
+func (er *QuestionRepository) GetAllQuestionsWithPagination(ctx context.Context, tx *gorm.DB, examID string, req dto.PaginationRequest) (dto.QuestionPaginationRepositoryResponse, error) {
 	if tx == nil {
 		tx = er.db
 	}
@@ -71,7 +71,7 @@ func (er *QuestionRepository) GetAllQuestionsWithPagination(ctx context.Context,
 		req.Page = 1
 	}
 
-	query := tx.WithContext(ctx).Model(&model.Question{}).Preload("Exam").Preload("Exam.Lecturer")
+	query := tx.WithContext(ctx).Model(&model.Question{}).Preload("Exam").Preload("Exam.Lecturer").Where("exam_id = ?", examID)
 	if req.Search != "" {
 		searchValue := "%" + strings.ToLower(req.Search) + "%"
 		query = query.Where("LOWER(name) LIKE ?", searchValue)

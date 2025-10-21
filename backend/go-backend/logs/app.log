@@ -1191,3 +1191,5 @@ time="2025-10-15T15:19:56+07:00" level=info msg="Authenticated request - UserID:
 time="2025-10-15T15:19:56+07:00" level=info msg="success refresh token"
 time="2025-10-15T15:19:57+07:00" level=info msg="Authenticated request - UserID: f3347eb7-9924-4a72-a956-ea215a7f7d3b, Role: admin"
 time="2025-10-15T15:19:57+07:00" level=info msg="success refresh token"
+time="2025-10-17T00:34:00+07:00" level=info msg="Logger initialized"
+time="2025-10-17T00:34:14+07:00" level=info msg="Logger initialized"
