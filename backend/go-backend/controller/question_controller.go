@@ -56,9 +56,8 @@ func (qc *QuestionController) CreateQuestion(ctx *gin.Context) {
 func (qc *QuestionController) GetAllQuestionsByExam(ctx *gin.Context) {
 	paginationParam := ctx.DefaultQuery("pagination", "true")
 	usePagination := paginationParam != "false"
-
+	examID := ctx.Param("id")
 	if !usePagination {
-		examID := ctx.Param("id")
 		results, err := qc.questionService.GetAllQuestionsByExam(ctx, examID)
 		if err != nil {
 			logging.Log.WithError(err).Warn(constants.MESSAGE_FAILED_GET_ALL_QUESTION_NO_PAGINATION)
@@ -79,7 +78,7 @@ func (qc *QuestionController) GetAllQuestionsByExam(ctx *gin.Context) {
 		return
 	}
 
-	result, err := qc.questionService.GetAllQuestionsByExamWithPagination(ctx, payload)
+	result, err := qc.questionService.GetAllQuestionsByExamWithPagination(ctx, examID, payload)
 	if err != nil {
 		logging.Log.WithError(err).Warn(constants.MESSAGE_FAILED_GET_ALL_QUESTION_WITH_PAGINATION)
 		res := utils.BuildResponseFailed(constants.MESSAGE_FAILED_GET_ALL_QUESTION_WITH_PAGINATION, err.Error(), nil)
