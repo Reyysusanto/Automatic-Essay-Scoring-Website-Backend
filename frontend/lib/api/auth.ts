@@ -37,7 +37,7 @@ const processQueue = (error?: any, token?: string) => {
 // Request Interceptor: set Authorization header
 axiosAdminConfig.interceptors.request.use(
   (config) => {
-    const token = useAuthStore.getState().accessToken;
+    const token = useAuthStore.getState().refreshToken;
     if (token) {
       config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${token}`;
@@ -83,11 +83,9 @@ axiosAdminConfig.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const response = await axios.post(
-          `${API_URL}/auth/refresh-token`,
-          { refresh_token: refreshToken },
-          { headers: { 'Content-Type': 'application/json' } }
-        );
+        const response = await axios.get(`${API_URL}/auth/refreshtoken`, {
+          headers: { 'Content-Type': 'application/json' },
+        });
 
         const data = response.data as RefreshTokenResponse;
 

@@ -1,13 +1,13 @@
-import { examSchema } from '@/schemas/exam.schema';
 import { ExamResponse } from '@/types/exam.type';
 import { ErrorResponse } from '@/types/response.type';
 import axios from 'axios';
 import z from 'zod';
 import axiosAdminConfig from '../auth';
 import { createErrorAction } from '../errorResponse';
+import { ExamSchema } from '@/schemas/exam.schema';
 
 export const createExamService = async (
-  name: z.infer<typeof examSchema>
+  name: z.infer<typeof ExamSchema>
 ): Promise<ExamResponse | ErrorResponse> => {
   try {
     const response = await axiosAdminConfig.post<ExamResponse | ErrorResponse>(

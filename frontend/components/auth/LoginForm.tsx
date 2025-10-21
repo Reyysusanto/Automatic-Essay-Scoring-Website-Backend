@@ -85,6 +85,7 @@ const LoginForm = () => {
             </Button>
             <Button
               variant="ghost"
+              type="button"
               onClick={() => setRole('mahasiswa')}
               className={clsx(
                 'cursor-pointer rounded-full transition-all ease-in-out duration-500',

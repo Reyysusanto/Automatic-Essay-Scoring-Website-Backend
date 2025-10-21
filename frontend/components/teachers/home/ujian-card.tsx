@@ -33,6 +33,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { editExamService } from '@/lib/api/exam/editExam';
+import { Spinner } from '@/components/ui/spinner';
 
 interface UjianCardProps {
   exam: Exam;
@@ -49,7 +50,7 @@ export const UjianCard: React.FC<UjianCardProps> = ({ exam }) => {
     },
   });
 
-  const { control, handleSubmit, formState } = form;
+  const { control, handleSubmit, formState, setValue } = form;
 
   const { mutate: updateExamMutation, isPending: loadingUpdate } = useMutation({
     mutationFn: ({
@@ -63,6 +64,7 @@ export const UjianCard: React.FC<UjianCardProps> = ({ exam }) => {
       if (result.status) {
         toast.success(result.message);
         queryClient.invalidateQueries({ queryKey: ['exams'] });
+        setValue('name', '');
       } else {
         toast.error(result.error);
       }
@@ -174,9 +176,9 @@ export const UjianCard: React.FC<UjianCardProps> = ({ exam }) => {
             />
             <Button
               disabled={!formState.isValid || loadingUpdate}
-              className="w-fit self-end bg-primary-color hover:bg-emerald-500 cursor-pointer"
+              className="w-fit self-end bg-primary-color hover:bg-teal-600 cursor-pointer"
             >
-              Simpan Perubahan
+              {loadingUpdate ? <Spinner size={'small'} /> : 'Simpan Perubahan'}
             </Button>
           </form>
         </FormProvider>
