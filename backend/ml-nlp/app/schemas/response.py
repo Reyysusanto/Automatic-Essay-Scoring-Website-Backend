@@ -12,7 +12,7 @@ class BaseResponse(BaseModel):
 
 class EssayData(BaseModel):
     score_tfidf: Optional[float] = None
-    score_indobert: Optional[float] = None
+    score_sbert: Optional[float] = None
 
 class EssayResponse(BaseResponse):
     data: Optional[EssayData] = None
