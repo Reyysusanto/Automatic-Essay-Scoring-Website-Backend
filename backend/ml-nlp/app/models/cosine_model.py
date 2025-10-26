@@ -1,7 +1,7 @@
 import joblib
 from sklearn.metrics.pairwise import cosine_similarity
 
-vectorizer = joblib.load("app/core/aes_tfidf_vectorizer.joblib")
+vectorizer = joblib.load("aes_tfidf_vectorizer.joblib")
 
 def predict_score_tfidf(jawaban: str, kunci_jawaban: str) -> float:
     tfidf = vectorizer.transform([jawaban, kunci_jawaban])
