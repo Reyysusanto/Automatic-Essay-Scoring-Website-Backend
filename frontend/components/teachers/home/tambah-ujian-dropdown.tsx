@@ -1,32 +1,32 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { FormProvider, useForm } from 'react-hook-form';
-import z from 'zod';
-import { ExamSchema } from '@/schemas/exam.schema';
-import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useState } from "react";
+import { ChevronDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { FormProvider, useForm } from "react-hook-form";
+import z from "zod";
+import { ExamSchema } from "@/schemas/exam.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from '@/components/ui/form';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createExamService } from '@/lib/api/exam/createExam';
-import { toast } from 'sonner';
-import { Spinner } from '@/components/ui/spinner';
+} from "@/components/ui/form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createExamService } from "@/lib/api/exam/createExam";
+import { toast } from "sonner";
+import { Spinner } from "@/components/ui/spinner";
 
 export const TambahUjianDropdown = () => {
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const form = useForm<z.infer<typeof ExamSchema>>({
     resolver: zodResolver(ExamSchema),
-    mode: 'onChange',
+    mode: "onChange",
     defaultValues: {
-      name: '',
+      name: "",
     },
   });
 
@@ -37,7 +37,7 @@ export const TambahUjianDropdown = () => {
     onSuccess: (result) => {
       if (result.status) {
         toast.success(result.message, { duration: 3000 });
-        queryClient.invalidateQueries({ queryKey: ['exams'] });
+        queryClient.invalidateQueries({ queryKey: ["exams"] });
       } else {
         toast.error(result.error, { duration: 3000 });
       }
@@ -49,18 +49,19 @@ export const TambahUjianDropdown = () => {
 
   const submitForm = (data: z.infer<typeof ExamSchema>) => {
     createExam({ name: data.name });
-    setValue('name', '');
+    setValue("name", "");
     setIsOpen(false);
   };
 
   const handleCancel = () => {
     setIsOpen(false);
-    setValue('name', '');
+    setValue("name", "");
   };
 
   return (
     <div className="relative">
       <Button
+        id="add-exam-button"
         variant="outline"
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 h-10 px-4 rounded-lg"
@@ -68,7 +69,7 @@ export const TambahUjianDropdown = () => {
         <span>Tambahkan Ujian</span>
         <ChevronDown
           className={`w-4 h-4 transition-transform ${
-            isOpen ? 'rotate-180' : ''
+            isOpen ? "rotate-180" : ""
           }`}
         />
       </Button>
@@ -88,6 +89,7 @@ export const TambahUjianDropdown = () => {
                     <FormItem>
                       <FormControl>
                         <Input
+                        id="input-exam"
                           type="text"
                           placeholder="Masukkan judul ujian..."
                           autoFocus
@@ -101,11 +103,12 @@ export const TambahUjianDropdown = () => {
 
                 <div className="flex gap-2 mt-2 h-full">
                   <Button
+                    id="save-add-exam-button"
                     size="sm"
                     disabled={!formState.isValid || Loadingcreate}
                     className="flex-1 bg-primary-color hover:bg-teal-600 h-9 rounded-md text-white cursor-pointer"
                   >
-                    {Loadingcreate ? <Spinner size={'small'} /> : 'Tambah'}
+                    {Loadingcreate ? <Spinner size={"small"} /> : "Tambah"}
                   </Button>
                   <Button
                     type="button"

@@ -1,39 +1,39 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { MoreHorizontal, ChevronRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Exam } from '@/types/exam.type';
+import React from "react";
+import { MoreHorizontal, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Exam } from "@/types/exam.type";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@radix-ui/react-dropdown-menu';
-import { useRouter } from 'next/navigation';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteExamService } from '@/lib/api/exam/deleteExam';
-import { toast } from 'sonner';
+} from "@radix-ui/react-dropdown-menu";
+import { useRouter } from "next/navigation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteExamService } from "@/lib/api/exam/deleteExam";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import z from 'zod';
-import { FormProvider, useForm } from 'react-hook-form';
-import { ExamSchema } from '@/schemas/exam.schema';
-import { zodResolver } from '@hookform/resolvers/zod';
+} from "@/components/ui/dialog";
+import z from "zod";
+import { FormProvider, useForm } from "react-hook-form";
+import { ExamSchema } from "@/schemas/exam.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { editExamService } from '@/lib/api/exam/editExam';
-import { Spinner } from '@/components/ui/spinner';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { editExamService } from "@/lib/api/exam/editExam";
+import { Spinner } from "@/components/ui/spinner";
 
 interface UjianCardProps {
   exam: Exam;
@@ -44,9 +44,9 @@ export const UjianCard: React.FC<UjianCardProps> = ({ exam }) => {
   const router = useRouter();
   const form = useForm<z.infer<typeof ExamSchema>>({
     resolver: zodResolver(ExamSchema),
-    mode: 'onChange',
+    mode: "onChange",
     defaultValues: {
-      name: exam.name || '',
+      name: exam.name || "",
     },
   });
 
@@ -63,8 +63,8 @@ export const UjianCard: React.FC<UjianCardProps> = ({ exam }) => {
     onSuccess: (result) => {
       if (result.status) {
         toast.success(result.message);
-        queryClient.invalidateQueries({ queryKey: ['exams'] });
-        setValue('name', '');
+        queryClient.invalidateQueries({ queryKey: ["exams"] });
+        setValue("name", "");
       } else {
         toast.error(result.error);
       }
@@ -86,7 +86,7 @@ export const UjianCard: React.FC<UjianCardProps> = ({ exam }) => {
     onSuccess: (result) => {
       if (result.status) {
         toast.success(result.message);
-        queryClient.invalidateQueries({ queryKey: ['exams'] });
+        queryClient.invalidateQueries({ queryKey: ["exams"] });
       } else {
         toast.error(result.error);
       }
@@ -98,17 +98,23 @@ export const UjianCard: React.FC<UjianCardProps> = ({ exam }) => {
 
   return (
     <Dialog>
-      <div className="bg-white p-4 rounded-lg border border-input hover:shadow-md transition-all group min-h-[80px] flex items-center">
+      <div
+        id={`exam-${exam.id}`}
+        className="bg-white p-4 rounded-lg border border-input hover:shadow-md transition-all group min-h-[80px] flex items-center"
+      >
         <div className="flex items-center justify-between w-full">
           <div className="flex-1">
-            <h3 className="text-base font-semibold text-foreground">
+            <h3
+              id="exam-name"
+              className="text-base font-semibold text-foreground"
+            >
               {exam.name}
             </h3>
           </div>
 
           <div className="flex items-center gap-1">
             <DropdownMenu>
-              <DropdownMenuTrigger>
+              <DropdownMenuTrigger id={`option-${exam.id}`}>
                 <div className="flex items-center justify-center opacity-0 group-hover:opacity-100 w-8 h-8 cursor-pointer">
                   <MoreHorizontal className="w-4 h-4" />
                 </div>
@@ -118,17 +124,22 @@ export const UjianCard: React.FC<UjianCardProps> = ({ exam }) => {
                 align="end"
               >
                 <DropdownMenuItem
+                  id="view-btn"
                   className="hover:bg-gray-100 transition-all px-2 py-1 rounded-xs "
                   onClick={() => router.push(`exams/${exam.id}`)}
                 >
                   View
                 </DropdownMenuItem>
                 <DialogTrigger asChild>
-                  <DropdownMenuItem className="hover:bg-gray-100 transition-all px-2 py-1 rounded-xs ">
+                  <DropdownMenuItem
+                    id="edit-btn"
+                    className="hover:bg-gray-100 transition-all px-2 py-1 rounded-xs "
+                  >
                     Edit
                   </DropdownMenuItem>
                 </DialogTrigger>
                 <DropdownMenuItem
+                  id="delete-btn"
                   onClick={() => deleteExamMutation(exam.id)}
                   className="hover:bg-gray-100 transition-all px-2 py-1 rounded-xs "
                 >
@@ -164,6 +175,7 @@ export const UjianCard: React.FC<UjianCardProps> = ({ exam }) => {
                 <FormItem>
                   <FormControl>
                     <Input
+                      id="edit-exam"
                       type="text"
                       placeholder="Masukkan judul ujian..."
                       autoFocus
@@ -175,10 +187,11 @@ export const UjianCard: React.FC<UjianCardProps> = ({ exam }) => {
               )}
             />
             <Button
+              id="btn-save-update-exam"
               disabled={!formState.isValid || loadingUpdate}
               className="w-fit self-end bg-primary-color hover:bg-teal-600 cursor-pointer"
             >
-              {loadingUpdate ? <Spinner size={'small'} /> : 'Simpan Perubahan'}
+              {loadingUpdate ? <Spinner size={"small"} /> : "Simpan Perubahan"}
             </Button>
           </form>
         </FormProvider>
