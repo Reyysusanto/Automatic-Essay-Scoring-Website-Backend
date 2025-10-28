@@ -67,7 +67,7 @@ const LoginForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} id="login-form">
         <div className="flex flex-col gap-4 mt-4">
           <div className="flex gap-1">
             <Button
@@ -106,6 +106,7 @@ const LoginForm = () => {
                 <FormItem>
                   <FormControl>
                     <Input
+                      id="email"
                       placeholder="Masukkan Email"
                       className="rounded-full border-stone-700 h-10 px-4"
                       {...field}
@@ -123,6 +124,7 @@ const LoginForm = () => {
                   <FormItem>
                     <FormControl>
                       <Input
+                        id="password"
                         placeholder="Masukkan Password"
                         className="rounded-full border-stone-700 h-10 px-4 pr-10"
                         type={showPassword ? 'text' : 'password'}
@@ -146,6 +148,7 @@ const LoginForm = () => {
               </button>
             </div>
             <Button
+              id="login-button"
               disabled={formState.isSubmitting || !formState.isValid}
               className="cursor-pointer transition-all ease-in-out duration-600 rounded-full h-10 px-4"
             >

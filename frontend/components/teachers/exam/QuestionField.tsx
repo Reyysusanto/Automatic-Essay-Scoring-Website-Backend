@@ -67,18 +67,23 @@ const QuestionField = ({
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="w-8 h-8 flex items-center justify-center cursor-pointer rounded-full hover:bg-gray-100">
+            <button
+              id={`options-${question.id}`}
+              className="w-8 h-8 flex items-center justify-center cursor-pointer rounded-full hover:bg-gray-100"
+            >
               ...
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem
+              id={`edit-${question.id}`}
               className="cursor-pointer"
               onClick={() => handleEditQuestion(question)}
             >
               Edit
             </DropdownMenuItem>
             <DropdownMenuItem
+              id={`delete-${question.id}`}
               className="cursor-pointer"
               disabled={isPending}
               onClick={() => handleDeleteQuestion(question.id)}

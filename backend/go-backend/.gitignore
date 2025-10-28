@@ -22,7 +22,6 @@
 Thumbs.db
 
 # Environment & secret files
-.env
 .env.*
 
 # Dependency/vendor directory (jika tidak di-commit)
