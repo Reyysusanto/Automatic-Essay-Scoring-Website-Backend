@@ -1,26 +1,26 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { Providers } from "./providers";
-import { Toaster } from "sonner";
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import './globals.css';
+import { Providers } from './providers';
+import { Toaster } from 'sonner';
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-  title: "Essay Scoring System",
+  title: 'Essay Scoring System',
   // icons: {
   //   icon: '/assets/logo.svg',
   // },
-  keywords: ["Essay", "Scoring"],
-  description: "Essay Scoring System Website",
+  keywords: ['Essay', 'Scoring'],
+  description: 'Essay Scoring System Website',
   formatDetection: {
     telephone: false,
     date: false,
@@ -29,14 +29,14 @@ export const metadata: Metadata = {
     url: false,
   },
   alternates: {
-    canonical: "/",
+    canonical: '/',
   },
   openGraph: {
-    type: "website",
-    title: "Essay Scoring System",
-    description: "Essay Scoring System Website",
-    url: "/",
-    siteName: "Essay Scoring System",
+    type: 'website',
+    title: 'Essay Scoring System',
+    description: 'Essay Scoring System Website',
+    url: '/',
+    siteName: 'Essay Scoring System',
     // images: [
     //   {
     //     url: '/assets/logo.svg',

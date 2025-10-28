@@ -86,12 +86,16 @@ const EditQuestionForm = ({ question }: { question: Question }) => {
                   <FormLabel>Soal</FormLabel>
                   <FormControl>
                     <Textarea
+                      id="question"
                       placeholder="Masukkan Soal"
                       className="min-h-[120px] resize-none"
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage className="text-xs mb-1" />
+                  <FormMessage
+                    data-testid="text-question"
+                    className="text-xs mb-1"
+                  />
                 </FormItem>
               )}
             />
@@ -104,12 +108,16 @@ const EditQuestionForm = ({ question }: { question: Question }) => {
                   <FormLabel>Kunci Jawaban</FormLabel>
                   <FormControl>
                     <Textarea
+                      id="answer_key"
                       placeholder="Masukkan Jawaban"
                       className="min-h-[150px] resize-none"
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage className="text-xs mb-1" />
+                  <FormMessage
+                    data-testid="text-answer-key"
+                    className="text-xs mb-1"
+                  />
                 </FormItem>
               )}
             />
@@ -122,6 +130,7 @@ const EditQuestionForm = ({ question }: { question: Question }) => {
                   <FormLabel>Skor Maksimal</FormLabel>
                   <FormControl>
                     <Input
+                      id="max_score"
                       type="number"
                       placeholder="Masukkan Skor Maksimal"
                       className="min-w-[250px] resize-none"
@@ -130,7 +139,10 @@ const EditQuestionForm = ({ question }: { question: Question }) => {
                       value={field.value || ''}
                     />
                   </FormControl>
-                  <FormMessage className="text-xs mb-1" />
+                  <FormMessage
+                    data-testid="text-max-score"
+                    className="text-xs mb-1"
+                  />
                 </FormItem>
               )}
             />
@@ -138,6 +150,7 @@ const EditQuestionForm = ({ question }: { question: Question }) => {
             {/* Action Buttons */}
             <div className="flex justify-end gap-3 pt-6">
               <Button
+                id="cancel-button"
                 type="button"
                 variant="outline"
                 onClick={handleCancel}
@@ -147,6 +160,7 @@ const EditQuestionForm = ({ question }: { question: Question }) => {
                 Batal
               </Button>
               <Button
+                id="save-button"
                 type="submit"
                 disabled={
                   isPending || formState.isSubmitting || !formState.isValid

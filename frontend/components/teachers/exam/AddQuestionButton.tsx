@@ -15,6 +15,7 @@ const AddQuestionButton = () => {
   return (
     <div className="bg-white rounded-lg p-4 shadow flex justify-end">
       <Button
+        id="add-question-button"
         onClick={handleAddQuestion}
         variant={'default'}
         className="text-xs font-medium bg-gray-50 hover:bg-gray-100 text-gray-500 border-1 cursor-pointer"
