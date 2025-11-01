@@ -1,7 +1,9 @@
+import DashboardClient from "@/components/students/dashboard/DashboardClient";
+
 const DashboardPage = () => {
   return (
     <div>
-      <h1>Dashboard</h1>
+      <DashboardClient />
     </div>
   );
 };
