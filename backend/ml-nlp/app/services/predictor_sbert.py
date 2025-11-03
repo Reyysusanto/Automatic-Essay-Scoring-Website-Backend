@@ -8,7 +8,10 @@ def predict_score_sbert(soal: str, jawaban: str, kunci_jawaban: str) -> float:
 
     if jawaban.strip().lower() == kunci_jawaban.strip().lower():
         return 100.0
-
+    
+    if jawaban.strip().lower() == "":
+        return 0
+    
     sentence1 = kunci_jawaban
     sentence2 = jawaban
 
@@ -20,7 +23,7 @@ def predict_score_sbert(soal: str, jawaban: str, kunci_jawaban: str) -> float:
 
     vectorizer = TfidfVectorizer().fit_transform([kunci_jawaban, jawaban])
     tfidf_sim = cosine_similarity(vectorizer[0:1], vectorizer[1:2])[0][0]
-    score_tfidf = tfidf_sim * 100  # juga skala 0–100
+    score_tfidf = tfidf_sim * 100  
 
     final_score = (0.8 * score_sbert) + (0.2 * score_tfidf)
 
