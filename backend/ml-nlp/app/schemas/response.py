@@ -1,7 +1,12 @@
-from pydantic import BaseModel
+from typing import List, Optional
 from datetime import datetime
-from typing import Optional
+from pydantic import BaseModel
 
+class EssayData(BaseModel):
+    soal: str
+    jawaban: str
+    score_tfidf: Optional[float] = None
+    score_sbert: Optional[float] = None
 
 class BaseResponse(BaseModel):
     status: bool
@@ -9,10 +14,8 @@ class BaseResponse(BaseModel):
     timestamp: datetime
     data: Optional[dict] = None
 
-
-class EssayData(BaseModel):
-    score_tfidf: Optional[float] = None
-    score_sbert: Optional[float] = None
-
 class EssayResponse(BaseResponse):
     data: Optional[EssayData] = None
+
+class EssayBatchResponse(BaseResponse):
+    data: Optional[List[EssayData]] = None
