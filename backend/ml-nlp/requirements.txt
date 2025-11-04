@@ -10,4 +10,3 @@ scikit-learn
 matplotlib
 pydantic
 python-dotenv
-sentence-transformers
