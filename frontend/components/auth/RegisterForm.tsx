@@ -14,40 +14,34 @@ import {
   FormMessage,
 } from '../ui/form';
 import z from 'zod';
-import { jwtDecode } from 'jwt-decode';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import { LoginSchema } from '@/schemas/login.schema';
-import { JwtPayload, Role } from '@/types/auth.type';
-import { loginAction } from '@/lib/api/auth/login';
+import { RegisterSchema } from '@/schemas/register.schema';
+import { RegisterAction } from '@/lib/api/auth/register';
 
 const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordMatch, setPasswordMatch] = useState(false);
   const router = useRouter();
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    mode: 'onChange',
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof RegisterSchema>>({
+    mode: 'onSubmit',
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
+      name: '',
       email: '',
       password: '',
     },
   });
 
-  const { mutate: loginMutation } = useMutation({
-    mutationFn: loginAction,
+  const { mutate: registerMutation } = useMutation({
+    mutationFn: RegisterAction,
     onSuccess: (result) => {
       if (result.status) {
-        const decoded = jwtDecode<JwtPayload>(result.data.access_token);
         toast.success(result.message);
-        if (decoded.role === Role.ADMIN) {
-          router.push('/teachers/dashboard');
-        } else if (decoded.role === Role.USER) {
-          router.push('/students/dashboard');
-        } else {
-          toast.error('Unauthorized role. Please contact support.');
-          router.push('/login');
-        }
+        router.push('/login');
       } else {
         toast.error(result.error);
       }
@@ -59,8 +53,10 @@ const RegisterForm = () => {
 
   const { handleSubmit, formState } = form;
 
-  const onSubmit = (data: z.infer<typeof LoginSchema>) => {
-    loginMutation(data);
+  const realPassword = form.watch('password');
+
+  const onSubmit = (data: z.infer<typeof RegisterSchema>) => {
+    registerMutation(data);
   };
 
   return (
@@ -102,74 +98,74 @@ const RegisterForm = () => {
                 </FormItem>
               )}
             />
-            <div className="relative">
+            <div className="flex flex-col relative">
               <FormField
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="relative">
                     <FormControl>
-                      <Input
-                        id="password"
-                        placeholder="Masukkan Password"
-                        className="rounded-full border-stone-700 h-10 px-4 pr-10"
-                        type={showPassword ? 'text' : 'password'}
-                        {...field}
-                      />
+                      <div className="relative">
+                        <Input
+                          id="password"
+                          placeholder="Masukkan Password"
+                          className="rounded-full border-stone-700 h-10 px-4 pr-10"
+                          type={showPassword ? 'text' : 'password'}
+                          {...field}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                        >
+                          {showPassword ? (
+                            <EyeOff className="w-5 h-5" />
+                          ) : (
+                            <Eye className="w-5 h-5" />
+                          )}
+                        </button>
+                      </div>
                     </FormControl>
                     <FormMessage className="text-xs ml-4" />
                   </FormItem>
                 )}
               />
+            </div>
+
+            <div className="relative">
+              <Input
+                id="passwordConfirmation"
+                placeholder="Konfirmasi Password"
+                className="rounded-full border-stone-700 h-10 px-4 pr-10"
+                type={showConfirmPassword ? 'text' : 'password'}
+                onChange={(e) => {
+                  setPasswordMatch(realPassword === e.target.value);
+                  setConfirmPassword(e.target.value);
+                }}
+              />
               <button
                 type="button"
-                onClick={() => setShowPassword((prev) => !prev)}
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
                 className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
               >
-                {showPassword ? (
+                {showConfirmPassword ? (
                   <EyeOff className="w-5 h-5" />
                 ) : (
                   <Eye className="w-5 h-5" />
                 )}
               </button>
             </div>
-            <div className="relative">
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        id="passwordConfirmation"
-                        placeholder="Konfirmasi Password"
-                        className="rounded-full border-stone-700 h-10 px-4 pr-10"
-                        type={showPassword ? 'text' : 'password'}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs ml-4" />
-                  </FormItem>
-                )}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
-              >
-                {showPassword ? (
-                  <EyeOff className="w-5 h-5" />
-                ) : (
-                  <Eye className="w-5 h-5" />
-                )}
-              </button>
-            </div>
+            {!passwordMatch && confirmPassword.length > 0 && (
+              <p className="text-xs text-red-500 ml-4">
+                Passwords do not match
+              </p>
+            )}
             <Button
               id="login-button"
-              disabled={formState.isSubmitting || !formState.isValid}
+              disabled={formState.isSubmitting || !passwordMatch}
               className="cursor-pointer transition-all ease-in-out duration-600 rounded-full h-10 px-4"
             >
-              Login
+              Daftar Akun
             </Button>
           </div>
         </div>
