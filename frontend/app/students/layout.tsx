@@ -15,7 +15,7 @@ export default function StudentsLayout({
         <AppSidebar />
         <div className="flex flex-col w-full min-h-screen">
           <Header />
-          <main className="flex-1 bg-background-color">{children}</main>
+          <main className="flex-1 bg-gray-50">{children}</main>
         </div>
       </div>
     </SidebarProvider>
