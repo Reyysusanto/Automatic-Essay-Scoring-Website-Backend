@@ -13,6 +13,12 @@ export type JwtPayload = {
   role: Role;
 };
 
+export type Register = {
+  id: string;
+  name: string;
+  email: string;
+};
+
 export type Login = {
   access_token: string;
   refresh_token: string;
