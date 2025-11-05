@@ -1,5 +1,11 @@
+import DashboardClient from "@/components/teachers/dashboard/DashboardClient";
+
 const DashboardPage = () => {
-  return <div id="dashboard-teachers">Teacher Dashboard</div>;
+  return (
+    <div>
+      <DashboardClient />
+    </div>
+  );
 };
 
 export default DashboardPage;
