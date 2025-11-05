@@ -15,6 +15,11 @@ type (
 		Exam      ExamResponse `json:"exam"`
 	}
 
+	AnswerQuestionRequest struct {
+		QuestionId *uuid.UUID `json:"question_id" binding:"required"`
+		AnswerKey  string     `json:"answer_key" binding:"required"`
+	}
+
 	CreateQuestionRequest struct {
 		Question  string     `json:"question" binding:"required"`
 		AnswerKey string     `json:"answer_key" binding:"required"`

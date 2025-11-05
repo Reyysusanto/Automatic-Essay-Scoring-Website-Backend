@@ -10,7 +10,15 @@ var (
 	ErrGetAllExamNoPagination   = errors.New("failed get all exam no pagination")
 	ErrGetAllExamWithPagination = errors.New("failed get all exam with pagination")
 	ErrUpdateExam               = errors.New("failed update exam")
+	ErrCreateExamUser           = errors.New("failed create exam user")
 	ErrExamNameTooShort         = errors.New("failed exam name too short (min 3)")
+	ErrTokenExamNotFound        = errors.New("failed token exam not found")
+
+	//Essay
+	ErrCreateEssay    = errors.New("failed create essay")
+	ErrGetDetailEssay = errors.New("failed get detail essay")
+	ErrGetAllAnswer   = errors.New("failed get all answer")
+	ErrAnswerTooShort = errors.New("failed answer too short (min 3)")
 
 	//Question
 	ErrGetAllQuestionNoPagination   = errors.New("failed get all question no pagination")

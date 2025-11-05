@@ -18,10 +18,10 @@ func ExamRoutes(
 	{
 		exams.GET("", ExamController.GetAllExams)
 		exams.GET("/:id", ExamController.GetExamByID)
+		exams.POST("/check-token/:token", ExamController.CheckTokenExam)
 		exams.POST("", ExamController.CreateExam)
 		exams.PATCH("/:id", ExamController.UpdateExam)
 		exams.DELETE("/:id", ExamController.DeleteExam)
-
 		exams.GET("/cbeck/:id")
 
 	}

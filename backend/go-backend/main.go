@@ -41,14 +41,17 @@ func main() {
 
 		userRepo     = repository.NewUserRepository(db)
 		examRepo     = repository.NewExamRepository(db)
+		essayRepo    = repository.NewEssayRepository(db)
 		questionRepo = repository.NewQuestionRepository(db)
 
 		// adminRepo       = repository.NewAdminRepository(db)
 		userService     = service.NewUserService(userRepo, jwtService)
+		essayService    = service.NewEssayService(essayRepo, jwtService)
 		examService     = service.NewExamService(userRepo, examRepo, jwtService)
 		questionService = service.NewQuestionService(questionRepo, examRepo, jwtService)
 
 		// adminService    = service.NewAdminService(adminRepo, jwtService)
+		essayController    = controller.NewEssayController(essayService)
 		userController     = controller.NewUserController(userService, jwtService)
 		examController     = controller.NewExamController(examService)
 		questionController = controller.NewQuestionController(questionService)
@@ -61,6 +64,8 @@ func main() {
 	routes.PublicRoutes(server, userController, jwtService)
 	// routes.AdminRoutes(server, userController, adminController, jwtService)
 	routes.UserRoutes(server, userController, jwtService)
+	routes.EssayRoutes(server, essayController, jwtService)
+
 	routes.ExamRoutes(server, examController, jwtService)
 	routes.QuestionRoutes(server, questionController, jwtService)
 

@@ -17,10 +17,6 @@ type User struct {
 	Address     string    `json:"address"`
 	Role        string    `json:"role"`
 
-	Essays     []Essay    `gorm:"foreignKey:StudentID"`
-	Exams      []Exam     `gorm:"foreignKey:LecturerID"`
-	ExamsUsers []ExamUser `gorm:"foreignKey:StudentID"`
-
 	TimeStamp
 }
 

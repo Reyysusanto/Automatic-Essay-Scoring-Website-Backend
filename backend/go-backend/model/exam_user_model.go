@@ -15,4 +15,5 @@ type ExamUser struct {
 	Student   User       `gorm:"foreignKey:StudentID"`
 	ExamID    *uuid.UUID `gorm:"type:uuid" json:"exam_id"`
 	Exam      Exam       `gorm:"foreignKey:ExamID"`
+	TimeStamp
 }

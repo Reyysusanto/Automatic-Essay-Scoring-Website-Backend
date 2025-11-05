@@ -18,6 +18,7 @@ type (
 		GetAllExams(ctx context.Context) ([]dto.ExamResponse, error)
 		GetAllExamsWithPagination(ctx context.Context, req dto.PaginationRequest) (dto.ExamPaginationResponse, error)
 		GetExamByID(ctx context.Context, examId string) (dto.ExamResponse, error)
+		CheckExamToken(ctx context.Context, token string) (dto.ExamResponse, error)
 		UpdateExam(ctx context.Context, req dto.UpdateExamRequest) (dto.ExamResponse, error)
 		DeleteExam(ctx context.Context, examId string) (dto.ExamResponse, error)
 	}
@@ -71,8 +72,9 @@ func (es *ExamService) GetAllExamsWithPagination(ctx context.Context, req dto.Pa
 	var datas []dto.ExamResponse
 	for _, exam := range dataWithPaginate.Exams {
 		data := dto.ExamResponse{
-			ID:   exam.ID,
-			Name: exam.Name,
+			ID:    exam.ID,
+			Name:  exam.Name,
+			Token: exam.Token,
 			Lecturer: dto.UserResponse{
 				ID:          exam.Lecturer.ID,
 				Name:        exam.Lecturer.Name,
@@ -106,10 +108,16 @@ func (es *ExamService) CreateExam(ctx context.Context, req dto.CreateExamRequest
 	if err != nil {
 		return dto.ExamResponse{}, dto.ErrParseUUID
 	}
+
+	examToken, err := helpers.GenerateToken()
+	if err != nil {
+		return dto.ExamResponse{}, err
+	}
 	exam := model.Exam{
 		ID:         uuid.New(),
 		LecturerID: &userID,
 		Name:       req.Name,
+		Token:      examToken,
 	}
 	if err := es.examRepo.CreateExam(ctx, nil, exam); err != nil {
 		return dto.ExamResponse{}, err
@@ -119,11 +127,6 @@ func (es *ExamService) CreateExam(ctx context.Context, req dto.CreateExamRequest
 	if err != nil {
 		logging.Log.WithError(err).WithField("user_id", userID).Error(constants.MESSAGE_FAILED_GET_DETAIL_USER)
 		return dto.ExamResponse{}, constants.ErrGetUserByID
-	}
-
-	examToken, err := helpers.GenerateToken()
-	if err != nil {
-		return dto.ExamResponse{}, err
 	}
 
 	res := dto.ExamResponse{
@@ -152,6 +155,50 @@ func (es *ExamService) GetExamByID(ctx context.Context, examId string) (dto.Exam
 		Name: exam.Name,
 		Lecturer: dto.UserResponse{
 			ID:          exam.Lecturer.ID,
+			Name:        exam.Lecturer.Name,
+			Email:       exam.Lecturer.Email,
+			PhoneNumber: exam.Lecturer.PhoneNumber,
+			Address:     exam.Lecturer.Address,
+		},
+	}, nil
+}
+
+func (es *ExamService) CheckExamToken(ctx context.Context, tokenStr string) (dto.ExamResponse, error) {
+	token := ctx.Value("Authorization").(string)
+
+	userIDStr, err := es.jwtService.GetUserIDByToken(token)
+	if err != nil {
+		return dto.ExamResponse{}, dto.ErrGetUserIDFromToken
+	}
+
+	userID, err := uuid.Parse(userIDStr)
+	if err != nil {
+		return dto.ExamResponse{}, dto.ErrParseUUID
+	}
+
+	exam, _, err := es.examRepo.CheckTokenExam(ctx, nil, tokenStr)
+	if err != nil {
+		return dto.ExamResponse{}, dto.ErrTokenExamNotFound
+	}
+
+	examUser := model.ExamUser{
+		ID:        uuid.New(),
+		StudentID: &userID,
+		ExamID:    &exam.ID,
+	}
+
+	err = es.examRepo.CreateExamUser(ctx, nil, examUser)
+	if err != nil {
+		return dto.ExamResponse{}, dto.ErrCreateExamUser
+	}
+	// examUser, err := es.examRepo.CreateExamUser(ctx, nil,)
+
+	return dto.ExamResponse{
+		ID:    exam.ID,
+		Name:  exam.Name,
+		Token: exam.Token,
+		Lecturer: dto.UserResponse{
+			ID:          *exam.LecturerID,
 			Name:        exam.Lecturer.Name,
 			Email:       exam.Lecturer.Email,
 			PhoneNumber: exam.Lecturer.PhoneNumber,

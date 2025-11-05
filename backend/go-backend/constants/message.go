@@ -21,12 +21,13 @@ const (
 	MESSAGE_SUCCESS_REGISTER           = "success register user"
 
 	//exam
-	MESSAGE_FAILED_CREATE_EXAM     = "failed create exam"
-	MESSAGE_FAILED_GET_EXAM        = "failed get exam"
-	MESSAGE_FAILED_UPDATE_EXAM     = "failed update exam"
-	MESSAGE_FAILED_DELETE_EXAM     = "failed delete exam"
-	MESSAGE_FAILED_GET_ALL_EXAM    = "failed get all exam"
-	MESSAGE_FAILED_GET_DETAIL_EXAM = "failed get detail exam"
+	MESSAGE_FAILED_CREATE_EXAM      = "failed create exam"
+	MESSAGE_FAILED_GET_EXAM         = "failed get exam"
+	MESSAGE_FAILED_CHECK_TOKEN_EXAM = "failed check token exam"
+	MESSAGE_FAILED_UPDATE_EXAM      = "failed update exam"
+	MESSAGE_FAILED_DELETE_EXAM      = "failed delete exam"
+	MESSAGE_FAILED_GET_ALL_EXAM     = "failed get all exam"
+	MESSAGE_FAILED_GET_DETAIL_EXAM  = "failed get detail exam"
 
 	//question
 	MESSAGE_FAILED_CREATE_QUESTION                  = "failed create question"
@@ -37,6 +38,12 @@ const (
 	MESSAGE_FAILED_GET_DETAIL_QUESTION              = "failed get detail question"
 	MESSAGE_FAILED_GET_ALL_QUESTION_NO_PAGINATION   = "failed get all question no pagination"
 	MESSAGE_FAILED_GET_ALL_QUESTION_WITH_PAGINATION = "failed get all question with pagination"
+
+	//Essay
+	MESSAGE_FAILED_CREATE_ESSAYS    = "failed create essays"
+	MESSAGE_FAILED_UPDATE_ESSAYS    = "failed update essays"
+	MESSAGE_FAILED_GET_DETAIL_ESSAY = "failed get detail essay"
+	MESSAGE_FAILED_GET_ALL_ANSWER   = "failed get all answer"
 
 	// success
 
@@ -49,13 +56,19 @@ const (
 	MESSAGE_SUCCESS_LOGIN_USER      = "success login user"
 
 	// Exam
-	MESSAGE_SUCCESS_CREATE_EXAM     = "success create exam"
-	MESSAGE_SUCCESS_GET_EXAM        = "success get exam"
-	MESSAGE_SUCCESS_UPDATE_EXAM     = "success update exam"
-	MESSAGE_SUCCESS_DELETE_EXAM     = "success delete exam"
-	MESSAGE_SUCCESS_GET_ALL_EXAM    = "success get all exam"
-	MESSAGE_SUCCESS_GET_DETAIL_EXAM = "success get detail exam"
+	MESSAGE_SUCCESS_CREATE_EXAM      = "success create exam"
+	MESSAGE_SUCCESS_GET_EXAM         = "success get exam"
+	MESSAGE_SUCCESS_UPDATE_EXAM      = "success update exam"
+	MESSAGE_SUCCESS_DELETE_EXAM      = "success delete exam"
+	MESSAGE_SUCCESS_GET_ALL_EXAM     = "success get all exam"
+	MESSAGE_SUCCESS_GET_DETAIL_EXAM  = "success get detail exam"
+	MESSAGE_SUCCESS_CHECK_TOKEN_EXAM = "success check token exam"
 
+	//Essay
+	MESSAGE_SUCCESS_CREATE_ESSAY     = "success create essay"
+	MESSAGE_SUCCESS_GET_DETAIL_ESSAY = "success get detail essay"
+	MESSAGE_SUCCESS_GET_ALL_ANSWER   = "success get detail answer"
+	MESSAGE_SUCCESS_UPDATE_ESSAY     = "success update essay"
 	// Question
 	MESSAGE_SUCCESS_CREATE_QUESTION     = "success create question"
 	MESSAGE_SUCCESS_GET_QUESTION        = "success get question"

@@ -18,6 +18,7 @@ type (
 		CreateExam(ctx *gin.Context)
 		GetAllExams(ctx *gin.Context)
 		GetExamByID(ctx *gin.Context)
+		CheckTokenExam(ctx *gin.Context)
 		UpdateExam(ctx *gin.Context)
 		DeleteExam(ctx *gin.Context)
 	}
@@ -101,6 +102,27 @@ func (ac *ExamController) GetAllExams(ctx *gin.Context) {
 	// 	ctx.JSON(http.StatusBadRequest, res)
 	// 	return
 	// }
+
+}
+
+func (ac *ExamController) CheckTokenExam(ctx *gin.Context) {
+	tokenStr := ctx.Param("token")
+	// if tokenStr == "" {
+	// 	logging.Log.Warn(constants.MESSAGE_FAILED_TOKEN_NOT_FOUND)
+	// 	res := utils.BuildResponseFailed(constants.MESSAGE_FAILED_TOKEN_NOT_FOUND, "token not found", nil)
+	// 	ctx.JSON(http.StatusBadRequest, res)
+	// }
+
+	result, err := ac.examService.CheckExamToken(ctx, tokenStr)
+	if err != nil {
+		logging.Log.WithError(err).Warn(constants.MESSAGE_FAILED_CHECK_TOKEN_EXAM)
+		res := utils.BuildResponseFailed(constants.MESSAGE_FAILED_CHECK_TOKEN_EXAM, err.Error(), nil)
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+	logging.Log.Infof(constants.MESSAGE_SUCCESS_CHECK_TOKEN_EXAM+": %s", result)
+	res := utils.BuildResponseSuccess(constants.MESSAGE_SUCCESS_CHECK_TOKEN_EXAM, result)
+	ctx.JSON(http.StatusOK, res)
 
 }
 

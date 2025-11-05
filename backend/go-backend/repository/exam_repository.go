@@ -14,11 +14,12 @@ type (
 	IExamRepository interface {
 		// Create
 		CreateExam(ctx context.Context, tx *gorm.DB, exam model.Exam) error
-
+		CreateExamUser(ctx context.Context, tx *gorm.DB, examUser model.ExamUser) error
 		// Read
 		GetAllExams(ctx context.Context, tx *gorm.DB) ([]model.Exam, error)
 		GetAllExamsWithPagination(ctx context.Context, tx *gorm.DB, req dto.PaginationRequest) (dto.ExamPaginationRepositoryResponse, error)
 		GetExamByID(ctx context.Context, tx *gorm.DB, examID string) (model.Exam, bool, error)
+		CheckTokenExam(ctx context.Context, tx *gorm.DB, token string) (model.Exam, bool, error)
 
 		// Update
 		UpdateExam(ctx context.Context, tx *gorm.DB, exam model.Exam) error
@@ -44,6 +45,28 @@ func (er *ExamRepository) CreateExam(ctx context.Context, tx *gorm.DB, exam mode
 	}
 
 	return tx.WithContext(ctx).Create(&exam).Preload("Lecturer").Error
+}
+
+func (er *ExamRepository) CreateExamUser(ctx context.Context, tx *gorm.DB, examUser model.ExamUser) error {
+	if tx == nil {
+		tx = er.db
+	}
+
+	return tx.WithContext(ctx).Create(&examUser).Error
+}
+
+func (er *ExamRepository) CheckTokenExam(ctx context.Context, tx *gorm.DB, token string) (model.Exam, bool, error) {
+	if tx == nil {
+		tx = er.db
+	}
+
+	var exam model.Exam
+	if err := tx.WithContext(ctx).Preload("Lecturer").Where("token = ?", token).Take(&exam).Error; err != nil {
+		return model.Exam{}, false, err
+	}
+
+	return exam, true, nil
+
 }
 
 func (er *ExamRepository) GetAllExams(ctx context.Context, tx *gorm.DB) ([]model.Exam, error) {
@@ -81,6 +104,7 @@ func (er *ExamRepository) GetAllExamsWithPagination(ctx context.Context, tx *gor
 	}
 
 	query := tx.WithContext(ctx).Model(&model.Exam{}).Preload("Lecturer")
+
 	if req.Search != "" {
 		searchValue := "%" + strings.ToLower(req.Search) + "%"
 		query = query.Where("LOWER(name) LIKE ?", searchValue)
